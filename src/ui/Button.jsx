@@ -65,4 +65,11 @@ ${props => variations[props.variant]}
   /* ${({ variant }) => variations[variant]}; */
 `;
 
+
+Button.defaultProps = {
+  variation: "primary",
+  size: "medium",
+  
+}
+
 export default Button;
