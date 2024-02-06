@@ -1,5 +1,6 @@
 import styled from "styled-components"
-
+import Logo from "../ui/Logo"
+import MainNav from "../ui/MainNav"
 
 const StyledSidebar = styled.div`
 background-color: var(--color-grey-0);
@@ -11,7 +12,8 @@ grid-row: 1 / -1;
 const Sidebar = () => {
   return (
     <StyledSidebar>
-      Sidebar 🚚🚛🚒
+      <Logo />
+      <MainNav />
     </StyledSidebar>
   )
 }
