@@ -19,4 +19,8 @@ const Spinner = styled.div`
   animation: ${rotate} 1.5s infinite linear;
 `;
 
-export default Spinner;
+function SpinnerComponent() {
+  return <Spinner />;
+}
+
+export default SpinnerComponent;
