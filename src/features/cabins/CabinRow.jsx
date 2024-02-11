@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
 import CreateCabinForm from "../cabins/CreateCabinForm";
 import { useDeleteCabin } from "./useDeleteCabin";
+import { HiSquare2Stack, HiPencil, HiTrash } from "react-icons/hi2";
+import { useCreateCabin } from "./useCreateCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -48,7 +50,9 @@ const Discount = styled.div`
 
 function CabinRow({ cabin }) {
   const [showForm, setShowForm] = useState(false);
-  const {isDeleting, deleteCabin} = useDeleteCabin()
+  const { isDeleting, deleteCabin } = useDeleteCabin();
+  const { isSubmitting, createCabin } = useCreateCabin();
+
   const {
     name,
     maxCapacity,
@@ -56,9 +60,19 @@ function CabinRow({ cabin }) {
     discount,
     image,
     id: cabinId,
+    description,
   } = cabin;
 
-
+  function handleDuplicate() {
+    createCabin({
+      name: `Copy of ${name}`,
+      maxCapacity,
+      regularPrice,
+      discount,
+      image,
+      description,
+    });
+  }
 
   return (
     <>
@@ -67,14 +81,24 @@ function CabinRow({ cabin }) {
         <Cabin>{name}</Cabin>
         <div>Fits up to {maxCapacity} guests</div>
         <Price>{formatCurrency(regularPrice)}</Price>
-       {discount ? <Discount>{formatCurrency(discount)}</Discount>: <span>&mdash;</span>}
+        {discount ? (
+          <Discount>{formatCurrency(discount)}</Discount>
+        ) : (
+          <span>&mdash;</span>
+        )}
         <div>
+          <button disabled={isSubmitting} onClick={handleDuplicate}>
+            <HiSquare2Stack />
+          </button>
+
           {/* Here is the Edit Functionality */}
-          <button onClick={() => setShowForm((show) => !show)}>Edit </button>
+          <button onClick={() => setShowForm((show) => !show)}>
+            <HiPencil />
+          </button>
 
           {/* Here is the Delete Mutate Functionality */}
           <button onClick={() => deleteCabin(cabinId)} disabled={isDeleting}>
-            Delete
+            <HiTrash />
           </button>
         </div>
       </TableRow>

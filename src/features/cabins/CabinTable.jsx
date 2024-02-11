@@ -1,10 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
-import { getCabins } from "../../services/apiCabins";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
-import { fetchDataFromAPI } from "../../services/apiJsontypecode";
 import { useFetchCabins } from "./useFetchCabins";
 
 const Table = styled.div`
@@ -31,11 +28,9 @@ const TableHeader = styled.header`
 `;
 
 function CabinTable() {
- 
+  // An Abstracted Hook For Fetching Cabins from the DataBase
+  const { isLoading, cabins } = useFetchCabins();
 
-const {isLoading, cabins, error} = useFetchCabins()
-
- 
   if (isLoading) return <Spinner />;
 
   return (
