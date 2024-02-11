@@ -5,6 +5,7 @@ import { getCabins } from "../../services/apiCabins";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
 import { fetchDataFromAPI } from "../../services/apiJsontypecode";
+import { useFetchCabins } from "./useFetchCabins";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -30,25 +31,9 @@ const TableHeader = styled.header`
 `;
 
 function CabinTable() {
-  const {
-    isLoading,
-    data: cabins,
-    error,
-  } = useQuery({
-    queryKey: ["cabins"],
-    queryFn: getCabins,
-  });
+ 
 
-//Played with https://jsonplaceholder.typicode.com/ as extra Learning Here 😅😁😆🤣
-// function CabinTable() {
-//   const {
-//     isLoading,
-//     data: code,
-//     error,
-//   } = useQuery({
-//     queryKey: ["code"],
-//     queryFn: fetchDataFromAPI,
-//   });
+const {isLoading, cabins, error} = useFetchCabins()
 
  
   if (isLoading) return <Spinner />;
