@@ -1,9 +1,15 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import styled from "styled-components";
-import { HiXMark } from "react-icons/hi2";
+import {
+  cloneElement,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
-import { cloneElement, createContext, useContext, useState } from "react";
+import { HiXMark } from "react-icons/hi2";
+import styled from "styled-components";
+import { useModal } from "../hooks/useModal";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -77,12 +83,15 @@ function Open({ children, opens: opensWindowName }) {
 
 function Window({ children, name }) {
   const { openName, close } = useContext(ModalContext);
+  
+const ref = useModal(close)
+  
 
   if (name !== openName) return null;
 
   return createPortal(
     <Overlay>
-      <StyledModal>
+      <StyledModal ref={ref}>
         <Button onClick={close}>
           <HiXMark />
         </Button>
