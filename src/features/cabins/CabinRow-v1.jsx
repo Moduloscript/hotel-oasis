@@ -3,7 +3,7 @@
 
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
-import CreateCabinForm from "../cabins/CreateCabinForm";
+import CreateCabinForm from "./CreateCabinForm";
 import { useDeleteCabin } from "./useDeleteCabin";
 import { HiSquare2Stack, HiPencil, HiTrash } from "react-icons/hi2";
 import { useCreateCabin } from "./useCreateCabin";
@@ -88,45 +88,54 @@ function CabinRow({ cabin }) {
         <span>&mdash;</span>
       )}
       <div>
+        <button disabled={isSubmitting} onClick={handleDuplicate}>
+          <HiSquare2Stack />
+        </button>
+
         <Modal>
-          {/* This is HOC Component */}
-          {/* Automatically Inherit from the Parent component */}
-          <Menus.Menu>
-            <Menus.Toggle id={cabinId} />
-            <Menus.List id={cabinId}>
-              <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
-                Duplicate
-              </Menus.Button>
+          <Modal.Open opens="edit">
+            {/* Here is the Edit Functionality */}
+            <button>
+              <HiPencil />
+            </button>
+          </Modal.Open>
+          <Modal.Window name="edit">
+            <CreateCabinForm cabinToEdit={cabin} />
+          </Modal.Window>
 
-              <Modal.Open opens="edit">
-                {/* Here is the Edit Functionality */}
-                <Menus.Button icon={<HiPencil />} onClick={handleDuplicate}>
-                  Edit
-                </Menus.Button>
-              </Modal.Open>
-
-              <Modal.Open opens="delete">
-                <Menus.Button icon={<HiTrash />} onClick={handleDuplicate}>
-                  Delete
-                </Menus.Button>
-              </Modal.Open>
-            </Menus.List>
-
-            <Modal.Window name="edit">
-              <CreateCabinForm cabinToEdit={cabin} />
-            </Modal.Window>
-
-            <Modal.Window name="delete">
-              {/* OnconfirmDelete Component receives
+          <Modal.Open opens="delete">
+            {/* Here is the Delete Mutate Functionality */}
+            <button>
+              <HiTrash />
+            </button>
+          </Modal.Open>
+          <Modal.Window name="delete">
+            {/* OnconfirmDelete Component receives
              props from Modal as it is a Child component */}
-              <ConfirmDelete
-                resourceName="cabins"
-                disabled={isDeleting}
-                onConfirm={() => deleteCabin(cabinId)}
-              />
-            </Modal.Window>
-          </Menus.Menu>
+            <ConfirmDelete
+              resourceName="cabins"
+              disabled={isDeleting}
+              onConfirm={() => deleteCabin(cabinId)}
+            />
+          </Modal.Window>
         </Modal>
+
+        {/* This is HOC Component */}
+        {/* Automatically Inherit from the Parent component */}
+        <Menus.Menu>
+          <Menus.Toggle id={cabinId} />
+          <Menus.List id={cabinId}>
+            <Menus.Button icon={<HiSquare2Stack />}
+            onClick={handleDuplicate}
+            >Duplicate</Menus.Button>
+            <Menus.Button icon={<HiPencil />}
+            onClick={handleDuplicate}
+            >Edit</Menus.Button>
+            <Menus.Button icon={<HiTrash />}
+            onClick={handleDuplicate}
+            >Delete</Menus.Button>
+          </Menus.List>
+        </Menus.Menu>
       </div>
     </Table.Row>
   );
