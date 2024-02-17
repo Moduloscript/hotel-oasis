@@ -12,7 +12,7 @@ import Textarea from "../../ui/Textarea";
 import { useCreateCabin } from "./useCreateCabin";
 import { useEditCabin } from "./useEditCabin";
 
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { id: editId, ...editValues } = cabinToEdit;
   const queryClient = useQueryClient();
 
@@ -26,8 +26,6 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
   // Extracted and Abstracted Custom React Hook Call 🦉🙌🏽
   const { isSubmitting, createCabin } = useCreateCabin();
-
-
 
   // Extracted and Abstracted Custom React Hook Call 🦉🙌🏽
   const { isEditing, editCabin } = useEditCabin();
@@ -50,17 +48,23 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         { ...data, image: image },
         {
           // React query calls the useForm hook reset() here directly on the Mutating function
-          onSuccess: (data) => reset(),
+          onSuccess: (data) => {
+            reset(),
+              // CloseModal function HOC pattern
+              onCloseModal?.();
+          },
         }
       );
   };
-
   const onError = (errors) => {
     // console.log(errors);
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit, onError)}
+      type={onCloseModal ? "modal" : "regular"} //Determining the nature of the form dependent on the modal state
+    >
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
           disabled={isWorking}
@@ -93,17 +97,17 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         />
       </FormRow>
 
-      <FormRow label="discount" error={errors?.discount?.message}>
+      <FormRow label="Discount" error={errors?.discount?.message}>
         <Input
           type="number"
-          disabled={isWorking}
           id="discount"
+          disabled={isWorking}
           defaultValue={0}
           {...register("discount", {
-            required: "This Field is required and cannot not be left blank",
+            required: "This field is required",
             validate: (value) =>
               value <= getValues().regularPrice ||
-              "Discount should be less than the Price",
+              "Discount should be less than regular price",
           })}
         />
       </FormRow>
@@ -133,7 +137,11 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
           Cancel
         </Button>
         <Button disabled={isWorking}>
