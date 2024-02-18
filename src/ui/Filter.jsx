@@ -39,8 +39,12 @@ const FilterButton = styled.button`
 `;
 
 function Filter({ filterField, options }) {
+  // useParams State here
   const [searchParams, setSearchParams] = useSearchParams();
+  const currentFilter = searchParams.get(filterField) || options.at(0).value
 
+
+  // Click function that trigger options value pass down as Props 
   function handleClick(value) {
     searchParams.set(filterField, value);
     setSearchParams(searchParams);
@@ -49,7 +53,12 @@ function Filter({ filterField, options }) {
   return (
     <StyledFilter>
       {options.map((option) => (
-        <FilterButton onClick={() => handleClick(option.value)} key={option.value}>
+        <FilterButton
+          onClick={() =>handleClick(option.value)}
+          key={option.value}
+          active={option.value === currentFilter}
+          disabled={option.value === currentFilter}
+        >
           {option.label}
         </FilterButton>
       ))}
