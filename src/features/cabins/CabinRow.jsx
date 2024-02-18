@@ -1,17 +1,18 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
+import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import Menus from "../../ui/Menus";
+import Modal from "../../ui/Modal";
+import Table from "../../ui/Table";
 import { formatCurrency } from "../../utils/helpers";
 import CreateCabinForm from "../cabins/CreateCabinForm";
-import { useDeleteCabin } from "./useDeleteCabin";
-import { HiSquare2Stack, HiPencil, HiTrash } from "react-icons/hi2";
 import { useCreateCabin } from "./useCreateCabin";
-import Modal from "../../ui/Modal";
-import ConfirmDelete from "../../ui/ConfirmDelete";
-import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
+import { useDeleteCabin } from "./useDeleteCabin";
 
+// This styled component was replaced with Table Ui component in line 9
 // const TableRow = styled.div`
 //   display: grid;
 //   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
@@ -53,7 +54,7 @@ const Discount = styled.div`
 
 function CabinRow({ cabin }) {
   const { isDeleting, deleteCabin } = useDeleteCabin();
-  const { isSubmitting, createCabin } = useCreateCabin();
+  const { createCabin } = useCreateCabin();
 
   const {
     name,
@@ -100,15 +101,11 @@ function CabinRow({ cabin }) {
 
               <Modal.Open opens="edit">
                 {/* Here is the Edit Functionality */}
-                <Menus.Button icon={<HiPencil />} onClick={handleDuplicate}>
-                  Edit
-                </Menus.Button>
+                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
               </Modal.Open>
 
               <Modal.Open opens="delete">
-                <Menus.Button icon={<HiTrash />} onClick={handleDuplicate}>
-                  Delete
-                </Menus.Button>
+                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
               </Modal.Open>
             </Menus.List>
 
