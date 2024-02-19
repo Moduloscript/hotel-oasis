@@ -1,9 +1,20 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+
 import BookingRow from "./BookingRow";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import Empty from "../../ui/Empty";
+import { useFetchBookings } from "./useFetchBookings";
+import SpinnerComponent from "../../ui/Spinner";
 
 function BookingTable() {
-  const bookings = [];
+  const { bookings, isLoading } = useFetchBookings()
+  
+  if (isLoading) return <SpinnerComponent />;
+
+
+if(!bookings.length) return <Empty  resourceName="bookings"/>
 
   return (
     <Menus>

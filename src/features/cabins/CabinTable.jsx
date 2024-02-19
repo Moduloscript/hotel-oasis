@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
+import { useSearchParams } from "react-router-dom";
+import Empty from "../../ui/Empty";
+import Menus from "../../ui/Menus";
 import Spinner from "../../ui/Spinner";
+import Table from "../../ui/Table";
 import CabinRow from "./CabinRow";
 import { useFetchCabins } from "./useFetchCabins";
-import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
-import { useSearchParams } from "react-router-dom";
 
 
 
@@ -14,6 +15,7 @@ function CabinTable() {
   const [searchParams] = useSearchParams();
 
   if (isLoading) return <Spinner />;
+  if (!cabins.length) return <Empty resourceName="cabins" />;
 
   // THE FILTER 
   const filterValue = searchParams.get("discount") || "all";
