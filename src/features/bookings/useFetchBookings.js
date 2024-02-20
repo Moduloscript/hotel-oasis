@@ -12,6 +12,7 @@ export function useFetchBookings() {
   const [searchParams] = useSearchParams();
 
   // FILTER
+  // This gotten from the Url described First in the Sort Ui Component
   const filterValue = searchParams.get("status");
   const filter =
     !filterValue || filterValue === "all"
@@ -21,15 +22,35 @@ export function useFetchBookings() {
   // Here the Filter Method is dynamic pass to the Api QueryHook
   // { field: "totalPrice", value: 5000, method: "gte" };
 
+
+  // SORTBY
+  // This gotten from the Url described First in the Sort Ui Component
+  const sortByRaw = searchParams.get("sortBy") || "startDate-desc";
+
+  // wrangling and all here 🧺
+  const [field, direction] = sortByRaw.split("-");
+
+  const sortBy = { field, direction };
+
+
+   // QUERY 
   const {
     isLoading,
     data: bookings,
     error,
   } = useQuery({
-    queryKey: ["bookings", filter],
+    // The dependency array queue
+    queryKey: [
+      "bookings",
+      filter,
+      sortBy
+    ],
+
+    // Real Idan GANGAN 🔫
     queryFn: () =>
       getBookings({
         filter,
+        sortBy,
       }),
   });
   return { isLoading, bookings, error };
