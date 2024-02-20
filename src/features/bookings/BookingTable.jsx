@@ -14,7 +14,7 @@ function BookingTable() {
   if (isLoading) return <SpinnerComponent />;
 
 
-if(!bookings.length) return <Empty  resourceName="bookings"/>
+  if (!bookings.length) return <Empty resourceName="bookings" />;
 
   return (
     <Menus>
