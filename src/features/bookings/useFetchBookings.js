@@ -4,6 +4,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
+import { PAGE_SIZE } from "../../utils/constants";
 
 export function useFetchBookings() {
   const queryClient = useQueryClient();
@@ -18,10 +19,9 @@ export function useFetchBookings() {
     !filterValue || filterValue === "all"
       ? null
       : { field: "status", value: filterValue };
-  
+
   // Here the Filter Method is dynamic pass to the Api QueryHook
   // { field: "totalPrice", value: 5000, method: "gte" };
-
 
   // SORTBY
   // This gotten from the Url described First in the Sort Ui Component
@@ -32,30 +32,49 @@ export function useFetchBookings() {
 
   const sortBy = { field, direction };
 
- // PAGINATION
- const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
+  // PAGINATION
+  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
 
-   // QUERY 
+  // QUERY
   const {
     isLoading,
     data: { data: bookings, count } = {},
     error,
   } = useQuery({
     // The dependency array queue
-    queryKey: [
-      "bookings",
-      filter,
-      sortBy,
-      page
-    ],
+    queryKey: ["bookings", filter, sortBy, page],
 
     // Real Idan GANGAN 🔫
     queryFn: () =>
       getBookings({
         filter,
         sortBy,
-        page
+        page,
       }),
   });
-  return { isLoading, bookings, error ,count};
+
+  //PRE FETCHING
+  const pageCount = Math.ceil(count / PAGE_SIZE);
+
+  if (page < pageCount)
+    queryClient.prefetchQuery({
+      queryKey: ["bookings", filter, sortBy, page + 1],
+      queryFn: () =>
+        getBookings({
+          filter,
+          sortBy,
+          page: page + 1,
+        }),
+    });
+  if (page > 1)
+    queryClient.prefetchQuery({
+      queryKey: ["bookings", filter, sortBy, page - 1],
+      queryFn: () =>
+        getBookings({
+          filter,
+          sortBy,
+          page: page - 1,
+        }),
+    });
+  return { isLoading, bookings, error, count };
 }
