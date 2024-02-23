@@ -32,18 +32,21 @@ export function useFetchBookings() {
 
   const sortBy = { field, direction };
 
+ // PAGINATION
+ const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
 
    // QUERY 
   const {
     isLoading,
-    data: bookings,
+    data: { data: bookings, count } = {},
     error,
   } = useQuery({
     // The dependency array queue
     queryKey: [
       "bookings",
       filter,
-      sortBy
+      sortBy,
+      page
     ],
 
     // Real Idan GANGAN 🔫
@@ -51,7 +54,8 @@ export function useFetchBookings() {
       getBookings({
         filter,
         sortBy,
+        page
       }),
   });
-  return { isLoading, bookings, error };
+  return { isLoading, bookings, error ,count};
 }
