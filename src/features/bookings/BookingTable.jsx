@@ -14,11 +14,11 @@ function BookingTable() {
 
   if (isLoading) return <SpinnerComponent />;
 
-  if (!bookings.length) return <Empty resourceName="bookings" />;
+  if (!bookings?.length) return <Empty resourceName='bookings' />;
 
   return (
     <Menus>
-      <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
+      <Table columns='0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem'>
         <Table.Header>
           <div>Cabin</div>
           <div>Guest</div>

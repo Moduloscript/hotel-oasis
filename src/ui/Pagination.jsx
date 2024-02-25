@@ -73,7 +73,7 @@ function Pagination({ count }) {
     : Number(searchParams.get("page"));
 
   // Ascertaining the Page count
-  const pageCount = Math.ceil(count / 10);
+  const pageCount = Math.ceil(count / PAGE_SIZE);
 
   function nextPage() {
     const next = currentPage === pageCount ? currentPage : currentPage + 1;

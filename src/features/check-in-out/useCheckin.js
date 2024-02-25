@@ -8,10 +8,13 @@ export function useCheckin() {
   const navigate = useNavigate();
 
   const { mutate: checkin, isLoading: isCheckingIn } = useMutation({
-    mutationFn: (bookingId) =>
+    mutationFn: (
+      { bookingId, breakfast } //here destructing the object received in the CheckinBooking Components
+    ) =>
       updateBooking(bookingId, {
         status: "checked-in",
         isPaid: true,
+        ...breakfast, // those objects are Spread with the spread syntax
       }),
 
     onSuccess: (data) => {
