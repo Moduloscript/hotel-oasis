@@ -12,6 +12,7 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 import Spinner from "../../ui/Spinner";
 import { useFetchBooking } from "./useFetchBooking";
+import { useNavigate } from "react-router-dom";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
 
@@ -23,6 +24,7 @@ const HeadingGroup = styled.div`
 
 function BookingDetail() {
   const { booking, isLoading } = useFetchBooking();
+  const navigate = useNavigate();
 
   const moveBack = useMoveBack();
 
@@ -47,6 +49,12 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
+      {status === "unconfirmed" && (
+            <Button
+              onClick={() => navigate(`/checkin/${bookingId}`)}>
+              Check In
+            </Button>
+          )}
         <Button variation='secondary' onClick={moveBack}>
           Back
         </Button>
