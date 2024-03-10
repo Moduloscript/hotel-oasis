@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { login as loginApi } from '../../services/apiAuth';
@@ -13,6 +11,7 @@ export function useLogin() {
   const { mutate: login, isLoading } = useMutation({
     mutationFn: ({ email, password }) => loginApi({ email, password }),
     onSuccess: (user) => {
+      queryClient.setQueriesData(["user"], user)
       navigate('/dashboard');
     },
     onError: (err) => {
