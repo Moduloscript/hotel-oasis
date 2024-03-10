@@ -12,14 +12,21 @@ import { useLogin } from "./useLogin";
 function LoginForm() {
   const [email, setEmail] = useState("maduemeka254@gmail.com");
   const [password, setPassword] = useState("Megatron200");
- const {login, isLoading} = useLogin()
+  const { login, isLoading } = useLogin();
   function handleSubmit(e) {
     e.preventDefault();
     if (!email || !password) return;
-   login({
-    email,
-    password
-   })
+    login(
+      {
+        email,
+        password,
+      },
+      {
+        onSettled: () => {
+          setEmail(""), setPassword("");
+        },
+      }
+    );
   }
 
   return (
@@ -43,15 +50,11 @@ function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           disabled={isLoading}
-
         />
       </FormRowVertical>
       <FormRowVertical>
-          
-        <Button size='large'
-          disabled={isLoading}
-        >
-          {!isLoading? "Log in " : <SpinnerMini />}
+        <Button size='large' disabled={isLoading}>
+          {!isLoading ? "Log in " : <SpinnerMini />}
         </Button>
       </FormRowVertical>
     </Form>
