@@ -18,7 +18,7 @@ function Login() {
     <LoginLayout>
       <Logo />
       <Heading as='h4'>Log in to your Account</Heading>
-      <LoginForm />
+      <LoginForm />    
     </LoginLayout>
   );
 }
